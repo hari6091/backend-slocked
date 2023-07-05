@@ -3,7 +3,14 @@ import { MQTTService } from "../service/mqttService.js";
 // Change this to point to your MQTT broker
 const MQTT_HOST_NAME = "mqtt://10.49.6.51:1883";
 
-var mqttClient = new MQTTService(MQTT_HOST_NAME);
+const messageCallback = (topic, message) => {
+  // Implemente o controller do backend aqui ###
+  console.log("Mensagem recebida:");
+  console.log("Tópico:", topic);
+  console.log("Mensagem:", message.toString());
+};
+
+var mqttClient = new MQTTService(MQTT_HOST_NAME, messageCallback);
 mqttClient.connect();
 mqttClient.subscribe("teste");
 

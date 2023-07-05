@@ -22,10 +22,7 @@ export class MQTTService {
     });
 
     // Call the message callback function when message arrived
-    this.mqttClient.on("message", function (topic, message) {
-      console.log(message.toString());
-      if (this.messageCallback) this.messageCallback(topic, message);
-    });
+    this.mqttClient.on("message", this.messageCallback);
 
     this.mqttClient.on("close", () => {
       console.log(`MQTT client disconnected`);
