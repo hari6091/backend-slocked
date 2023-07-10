@@ -55,7 +55,7 @@ app.use(SalaRoute);
 app.use(AuthRoute);
 
 app.use("/subscriber", subscriberRouter);
-app.use("/publisher", publisherRouter);
+app.use(publisherRouter);
 
 ////iniciar uma seção sempre que for usar
 store.sync();

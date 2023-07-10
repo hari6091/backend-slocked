@@ -3,12 +3,12 @@
 #include <PubSubClient.h>
 
 // WiFi configs
-const char* ssid = "Network_ID";
-const char* password = "Network_Pass";
+const char* ssid = "FAMILIA MEDEIROS";
+const char* password = "sl23jo316";
 
 // MQTT Config
-const char *mqtt_broker = "MQTT_IP";
-const char *serverTopic = "MPU/Keyboard";
+const char *mqtt_broker = "10.0.0.105";
+const char *serverTopic = "locksPing";
 const char *pongTopic = "locksPong";
 const char *mqtt_username = "";
 const char *mqtt_password = "";
@@ -18,7 +18,7 @@ const int mqtt_port = 1883;
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-const char *id = "D18";
+char *id = "D16";
 boolean open = false;
 
 void reconnectWiFi();
@@ -26,7 +26,7 @@ void setupWifi();
 void reconnectMQTT();
 void callback(char *, uint8_t *, unsigned int);
 void setupMQTT();
-const char *converter(uint8_t);
+char converter(uint8_t);
 void sendPong(boolean);
 
 void setup() {
@@ -88,15 +88,14 @@ void reconnectMQTT(){
 void callback(char *topic, uint8_t *payload, unsigned int length) {
   // Callback for listen what is been published
   char *message = "";
-  for (uint i; i < length; i++){
-    const char *u = converter(payload[i]);
-    strcat(message, u);
+  for (int i = 0; i < length; i++){
+    message[i] = converter(payload[i]);
   }
-  if(message == id){
+  Serial.println(message);
+  if(strcmp(message, id) == 0){
     open = !open;
     sendPong(open);
   }
-
 }
 
 void setupMQTT(){
@@ -109,13 +108,123 @@ void setupMQTT(){
   reconnectMQTT();
 }
 
-const char *converter(uint8_t character) {
-  if (character >= 48 && character <= 59) {
-    return (const char[]){(char)character, '\0'};
-  } else if (character >= 65 && character <= 90) {
-    return (const char[]){(char)character, '\0'};
-  } else {
-    return "!";
+char converter(uint8_t character) {
+  switch (character)
+  {
+  case 47:
+    return '/';
+    break;
+  case 48:
+    return '0';
+    break;  
+  case 49:
+    return '1';
+    break;
+  case 50:
+    return '2';
+    break;  
+  case 51:
+    return '3';
+    break;
+  case 52:
+    return '4';
+    break;  
+  case 53:
+    return '5';
+    break;
+  case 54:
+    return '6';
+    break;  
+  case 55:
+    return '7';
+    break;  
+  case 56:
+    return '8';
+    break;
+  case 57:
+    return '9';
+    break;  
+  case 65:
+    return 'A';
+    break;
+  case 66:
+    return 'B';
+    break;
+  case 67:
+    return 'C';
+    break;
+  case 68:
+    return 'D';
+    break;
+  case 69:
+    return 'E';
+    break;
+  case 70:
+    return 'F';
+    break;
+  case 71:
+    return 'G';
+    break;
+  case 72:
+    return 'H';
+    break;
+  case 73:
+    return 'I';
+    break;
+  case 74:
+    return 'J';
+    break;
+  case 75:
+    return 'K';
+    break;
+  case 76:
+    return 'L';
+    break;
+  case 77:
+    return 'M';
+    break;
+  case 78:
+    return 'N';
+    break;
+  case 79:
+    return 'O';
+    break;
+  case 80:
+    return 'P';
+    break;
+  case 81:
+    return 'Q';
+    break;
+  case 82:
+    return 'R';
+    break;
+  case 83:
+    return 'S';
+    break;
+  case 84:
+    return 'T';
+    break;
+  case 85:
+    return 'U';
+    break;
+  case 86:
+    return 'V';
+    break;
+  case 87:
+    return 'W';
+    break;
+  case 88:
+    return 'X';
+    break;
+  case 89:
+    return 'Y';
+    break;
+  case 90:
+    return 'Z';
+    break;
+  default:
+    return '!';
+    break;
   }
 }
 

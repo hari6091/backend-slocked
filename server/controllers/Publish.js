@@ -2,7 +2,7 @@ import { MQTTService } from "../service/mqttService.js";
 import Sala from "../models/SalaModel.js";
 
 // Change this to point to your MQTT broker
-const MQTT_HOST_NAME = "mqtt://10.49.6.51:1883";
+const MQTT_HOST_NAME = "mqtt://10.0.0.105:1883";
 
 const updateSala = async (lockId, lockState) => {
   try {
@@ -28,7 +28,7 @@ const updateSala = async (lockId, lockState) => {
   }
 };
 
-const messageCallback = (topic, message) => {
+const messageCallback = async (topic, message) => {
   const command = message.toString();
   let piece = 0;
   var lockId;
@@ -45,7 +45,8 @@ const messageCallback = (topic, message) => {
     } else {
       piece = 1;
     }
-    updateSala(lockId, lockState);
+    console.log("muda Status");
+    await updateSala(lockId, lockState);
   }
 };
 
