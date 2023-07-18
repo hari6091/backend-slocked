@@ -18,7 +18,7 @@ const int mqtt_port = 1883;
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-char *id = "D16";
+char id[] = "D16";
 boolean open = false;
 
 void reconnectWiFi();
@@ -87,15 +87,19 @@ void reconnectMQTT(){
 
 void callback(char *topic, uint8_t *payload, unsigned int length) {
   // Callback for listen what is been published
-  char *message = "";
-  for (int i = 0; i < length; i++){
+  char *message = new char[length + 1];
+  for (unsigned int i = 0; i < length; i++){
     message[i] = converter(payload[i]);
   }
+  message[length] = '\0';
   Serial.println(message);
+  Serial.println(id);
+  Serial.println(strcmp(message, id));
   if(strcmp(message, id) == 0){
     open = !open;
     sendPong(open);
   }
+  delete[] message;
 }
 
 void setupMQTT(){
@@ -230,8 +234,10 @@ char converter(uint8_t character) {
 
 void sendPong(boolean open){
   if(open){
-    client.publish(pongTopic, "D18-O");
+    Serial.println("Abrida");
+    client.publish(pongTopic, "D16-O");
   } else {
-    client.publish(pongTopic, "D18-C");
+    Serial.println("Fechada");
+    client.publish(pongTopic, "D16-C");
   }
 }
