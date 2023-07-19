@@ -2,12 +2,14 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
+#define D8 15
+
 // WiFi configs
-const char* ssid = "FAMILIA MEDEIROS";
-const char* password = "sl23jo316";
+const char* ssid = "networkId";
+const char* password = "networkPass";
 
 // MQTT Config
-const char *mqtt_broker = "10.0.0.105";
+const char *mqtt_broker = "mqttIp";
 const char *serverTopic = "locksPing";
 const char *pongTopic = "locksPong";
 const char *mqtt_username = "";
@@ -18,8 +20,9 @@ const int mqtt_port = 1883;
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-char id[] = "D16";
+char id[] = "D16"; // (OBS.:) D18 para o ESP que n esta com a MPU soldada
 boolean open = false;
+boolean changed = false;
 
 void reconnectWiFi();
 void setupWifi();
@@ -33,6 +36,7 @@ void setup() {
   Serial.begin(9600);
   setupWifi();
   setupMQTT();
+  pinMode(D8, OUTPUT); // (OBS.:) LED_BUILTIN em vez de D8 para o ESP que n esta com a MPU soldada
 }
 
 void loop() {
@@ -42,7 +46,16 @@ void loop() {
   if(!client.connected()){
     reconnectMQTT();
   }
-  client.subscribe(serverTopic);  
+  client.subscribe(serverTopic);
+
+  if(changed && open){
+    digitalWrite(D8, HIGH); // (OBS.:) LED_BUILTIN em vez de D8 para o ESP que n esta com a MPU soldada
+    changed = false;
+  } else if(changed && !open){
+    digitalWrite(D8, LOW); // (OBS.:) LED_BUILTIN em vez de D8 para o ESP que n esta com a MPU soldada
+    changed = false;
+  }
+
   client.loop();
 }
 
@@ -97,6 +110,7 @@ void callback(char *topic, uint8_t *payload, unsigned int length) {
   Serial.println(strcmp(message, id));
   if(strcmp(message, id) == 0){
     open = !open;
+    changed = true;
     sendPong(open);
   }
   delete[] message;
