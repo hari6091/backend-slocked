@@ -29,6 +29,7 @@ export const getUserById = async(req, res) =>{
 
 export const createUser = async(req, res) =>{
     const {name,tags, matricula, disciplinaOUcargo, email, password, confPassword, role} = req.body;
+    if(password == "") return res.status(400).json({msg: "Password undefined"});
     if(password !== confPassword) return res.status(400).json({msg: "Password and Confirm Password do not match"});
     const hashPassword = await argon2.hash(password);
     try {

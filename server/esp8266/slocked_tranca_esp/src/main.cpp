@@ -5,24 +5,24 @@
 #define D8 15
 
 // WiFi configs
-const char* ssid = "networkId";
-const char* password = "networkPass";
+const char* ssid = "FAMILIA MEDEIROS";
+const char* password = "sl23jo316";
+
+char id[] = "D16"; // (OBS.:) D18 para o ESP que n esta com a MPU soldada
+boolean open = false;
+boolean changed = false;
 
 // MQTT Config
-const char *mqtt_broker = "mqttIp";
+const char *mqtt_broker = "10.0.0.107";
 const char *serverTopic = "locksPing";
 const char *pongTopic = "locksPong";
-const char *mqtt_username = "";
+const char *mqtt_username = id;
 const char *mqtt_password = "";
 const int mqtt_port = 1883;
 
 // Identifying as a client
 WiFiClient espClient;
 PubSubClient client(espClient);
-
-char id[] = "D16"; // (OBS.:) D18 para o ESP que n esta com a MPU soldada
-boolean open = false;
-boolean changed = false;
 
 void reconnectWiFi();
 void setupWifi();
