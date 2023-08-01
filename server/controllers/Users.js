@@ -5,7 +5,7 @@ import SalaUser from "../models/SalaUserModel.js";
 export const getUsers = async(req, res) =>{
     try {
         const response = await User.findAll({
-            attributes:['id','uuid','name','tags','matricula','disciplinaOUcargo','email','role']
+            attributes:['id','uuid','name','tags','matricula','disciplinaOUcargo','email','role', 'createdAt']
         });
         res.status(200).json(response);
     } catch (error) {
@@ -21,7 +21,11 @@ export const getUserById = async(req, res) =>{
                 uuid: req.params.id
             }
         });
-        res.status(200).json(response);
+        if (response) {
+            res.status(200).json(response);
+          } else {
+            res.status(404).json({ msg: 'User not found' });
+        }
     } catch (error) {
         res.status(500).json({msg: error.message});
     }

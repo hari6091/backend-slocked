@@ -1,5 +1,7 @@
 const { createUser, getUsers, getUserById, updateUser } = require('./Users');
 
+let user1, user2;
+
 describe('Creating Users', ()=>{
     it.only("Sholdn't create a User without passing a name", async ()=>{
       const req = {
@@ -200,6 +202,9 @@ describe('Creating Users', ()=>{
         };
         await createUser(req, res);
         expect(res.status).toHaveBeenCalledWith(201);
+        req.body.name = "abc123";
+        await createUser(req, res);
+
     }); 
 });
 
@@ -209,16 +214,20 @@ describe('Find Users', ()=>{
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-    await getUsers({}, res);   
+    await getUsers({}, res);
+    user1 = res.json.mock.calls[0][0][res.json.mock.calls[0][0].length-2].dataValues
+    user2 = res.json.mock.calls[0][0][res.json.mock.calls[0][0].length-1].dataValues
     expect(res.status).toHaveBeenCalledWith(200);
-    console.log(res.json);    
   });
   it.only('get user by id', async()=>{
     const res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-    await getUserById({params:{id:'1'}}, res);   
+    console.log(user1.id);
+    await getUserById({params:{id: user1.uuid}}, res);   
     expect(res.status).toHaveBeenCalledWith(200);
+    console.log(res.json.mock.calls[0][0]);
+    expect(res.json.mock.calls[0][0].dataValues).toEqual(user1);
   });
 });
