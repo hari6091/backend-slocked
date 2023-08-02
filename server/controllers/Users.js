@@ -66,7 +66,7 @@ export const updateUser = async(req, res) =>{
     }else{
         hashPassword = await argon2.hash(password);
     }
-    if(password !== confPassword) return res.status(400).json({msg: "Password dan Confirm Password tidak cocok"});
+    if(password !== confPassword) return res.status(400).json({msg: "Password and Confirm Password don't match"});
     try {
         await User.update({
             name: name,

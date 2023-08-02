@@ -71,7 +71,7 @@ export const getSalaByUser = async (req, res) => {
     });
     if (user.role === "admin") {
       response = await Sala.findAll({
-        attributes: ["id", "uuid", "name", "numero", "status"],
+        attributes: ["id", "uuid", "name", "numero", "status", "grupo"],
         include: [
           {
             model: User,
@@ -87,7 +87,7 @@ export const getSalaByUser = async (req, res) => {
         },
       });
       response = await Sala.findAll({
-        attributes: ["id", "uuid", "name", "numero", "status"],
+        attributes: ["id", "uuid", "name", "numero", "status", "grupo"],
         where: {
           [Op.or]: listaSalas(lista),
         },
@@ -112,7 +112,7 @@ export const getSalaById = async (req, res) => {
         uuid: req.params.id,
       },
     });
-    if (!sala) return res.status(404).json({ msg: "Data not found" });
+    if (!sala) return res.status(404).json({ msg: "Sala not found" });
     let response;
     if (req.role === "admin") {
       response = await Sala.findOne({
@@ -137,7 +137,7 @@ export const getSalaById = async (req, res) => {
       });
     } else {
       response = await Sala.findOne({
-        attributes: ["id", "uuid", "name", "numero", "status"],
+        attributes: ["id", "uuid", "name", "numero", "status", "grupo"],
         where: {
           [Op.and]: [{ id: sala.id }, { userId: req.userId }],
         },
@@ -215,7 +215,6 @@ export const deleteSala = async (req, res) => {
       },
     });
     if (!sala) return res.status(404).json({ msg: "Data not found" });
-    const { name, numero, status } = req.body;
     if (req.role === "admin") {
       await Sala.destroy({
         where: {
