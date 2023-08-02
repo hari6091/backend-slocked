@@ -1,4 +1,4 @@
-const { createSala, getSalas, deleteSala, getSalaById, getSalaByUser } = require('./Salas');
+const { createSala, getSalas, deleteSala, getSalaById, getSalaByUser, updateSala } = require('./Salas');
 
 let labredes2;
 
@@ -163,6 +163,38 @@ describe('get salas', ()=>{
         const check = res.json.mock.calls[0][0][res.json.mock.calls[0][0].length-1].dataValues;
         delete check.createdAt;
         expect(check).toEqual(labredes2);
+    });
+    it.only("don't get sala by passing invalid userId", async()=>{
+        const res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn(),
+        };
+        const req = {
+            params: {id: 5000000000} // User id
+        }
+        await getSalaByUser(req, res);
+        expect(res.status).not.toHaveBeenCalledWith(200);
+    });
+});
+
+describe('update Sala', ()=>{
+    it.only('shold update grupo on the early created sala', async()=>{
+        const req = {
+            params:{id: labredes2.uuid},
+            body: {
+                name: "labredes2",
+                numero: "D25",
+                status: "inativo",
+                grupo: "redes",
+            },
+            userId: "1",
+            role: "admin"
+          };
+        const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+        };
+        await updateSala(req, res);
     });
 });
 
