@@ -10,6 +10,7 @@ import SalaRoute from "./routes/SalaRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import subscriberRouter from "./routes/Subscriber.js";
 import publisherRouter from "./routes/Publisher.js";
+import Users from "./models/UserModel";
 
 dotenv.config();
 
@@ -64,6 +65,30 @@ store.sync();
 //require('./mqtt');
 
 const PORT = process.env.PORT || 5000;
+
+Users.findAll()
+  .then((users) => {
+    if (users.length === 0) {
+      Users.create({
+        uuid: '2b22c47f-f5ed-4cc3-8b0b-a511b1bc22fd',
+        name: 'fulsss',
+        tags: 'ghgfvkj876',
+        matricula: '5646546',
+        disciplinaOUcargo: 'cordenador',
+        email: 'admin@gmil.com',
+        password: '$argon2id$v=19$m=4096,t=3,p=1$3ViIJoKimFeVTb3dljDD2w$/TqFqUmYB5M/wg/6/9IPINeYyBsVHUPp1oY5+v6nA9c',
+        role: 'admin',
+      }).then((novoUsuario) => {
+        console.log("Usuário inserido:", novoUsuario.toJSON());
+      });
+    } else {
+      console.log("Usuários já existem, nenhum novo usuário inserido.");
+    }
+  })
+  .catch((error) => {
+    console.error("Erro ao verificar usuários:", error);
+  });
+
 app.listen(PORT, () => {
   console.log(`Server up and running... ${PORT}`);
 });
