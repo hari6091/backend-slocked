@@ -1,6 +1,6 @@
 import {Sequelize} from "sequelize";
 
-const db = new Sequelize('slocked', 'root', 'root', {
+const db = new Sequelize('rfid', 'root', '0038', {
     host: "localhost",
     dialect: "mysql"
 });

@@ -2,7 +2,7 @@ import { MQTTService } from "../service/mqttService.js";
 import Sala from "../models/SalaModel.js";
 
 // Change this to point to your MQTT broker
-const MQTT_HOST_NAME = "mqtt://10.0.0.107:1883";
+const MQTT_HOST_NAME = "mqtt://10.49.7.81:1883";
 
 const updateSala = async function (lockId, lockState) {
   try {
