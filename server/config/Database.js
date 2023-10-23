@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-const db = new Sequelize('rfid', 'pguser', 'pgpassword', {
+const db = new Sequelize('rfid', 'postgres', 'pgpassword', {
     host: "database",
     dialect: "postgres",
 });
