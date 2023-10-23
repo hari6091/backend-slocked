@@ -10,7 +10,7 @@ import SalaRoute from "./routes/SalaRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import subscriberRouter from "./routes/Subscriber.js";
 import publisherRouter from "./routes/Publisher.js";
-import Users from "./models/UserModel";
+import Users from "./models/UserModel.js";
 
 dotenv.config();
 
