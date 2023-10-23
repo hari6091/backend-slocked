@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 
 const db = new Sequelize('rfid', 'pguser', 'pgpassword', {
-    host: "localhost",
+    host: "database",
     dialect: "postgres",
 });
 
