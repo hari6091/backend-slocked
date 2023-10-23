@@ -69,15 +69,29 @@ const PORT = process.env.PORT || 5000;
 Users.findAll()
   .then((users) => {
     if (users.length === 0) {
+      db.query(
+        `
+          GRANT USAGE ON SCHEMA public TO PUBLIC;
+          GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO PUBLIC;
+        `
+      )
+        .then(() => {
+          console.log("Privilégios de esquema concedidos com sucesso.");
+        })
+        .catch((error) => {
+          console.error("Erro ao conceder privilégios de esquema:", error);
+        });
+
       Users.create({
-        uuid: '2b22c47f-f5ed-4cc3-8b0b-a511b1bc22fd',
-        name: 'fulsss',
-        tags: 'ghgfvkj876',
-        matricula: '5646546',
-        disciplinaOUcargo: 'cordenador',
-        email: 'admin@gmil.com',
-        password: '$argon2id$v=19$m=4096,t=3,p=1$3ViIJoKimFeVTb3dljDD2w$/TqFqUmYB5M/wg/6/9IPINeYyBsVHUPp1oY5+v6nA9c',
-        role: 'admin',
+        uuid: "2b22c47f-f5ed-4cc3-8b0b-a511b1bc22fd",
+        name: "fulsss",
+        tags: "ghgfvkj876",
+        matricula: "5646546",
+        disciplinaOUcargo: "cordenador",
+        email: "admin@gmil.com",
+        password:
+          "$argon2id$v=19$m=4096,t=3,p=1$3ViIJoKimFeVTb3dljDD2w$/TqFqUmYB5M/wg/6/9IPINeYyBsVHUPp1oY5+v6nA9c",
+        role: "admin",
       }).then((novoUsuario) => {
         console.log("Usuário inserido:", novoUsuario.toJSON());
       });
