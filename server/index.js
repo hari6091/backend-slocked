@@ -31,7 +31,7 @@ app.use(
   session({
     resave: false,
     saveUninitialized: true,
-    secret: process.env.SESS_SECRET,
+    secret: "jsfgfjguwrg8783wgbjs849h2fu3cnsvh8wyr8fhwfvi2g225",
     store: store,
     cookie: {
       secure: "auto",

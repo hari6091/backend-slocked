@@ -1,8 +1,8 @@
-import {Sequelize} from "sequelize";
+import { Sequelize } from "sequelize";
 
-const db = new Sequelize('rfid', 'root', '0038', {
+const db = new Sequelize('rfid', 'pguser', 'pgpassword', {
     host: "localhost",
-    dialect: "mysql"
+    dialect: "postgres",
 });
 
 export default db;
